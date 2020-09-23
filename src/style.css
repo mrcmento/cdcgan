@@ -1,0 +1,254 @@
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --main-txt-color: gray;
+  }
+
+.front {
+    position: relative;;
+    z-index:15;
+}
+
+body {
+    margin: 0;
+    background-color: #4c4c4b;
+    font-family: monospace;
+}
+
+h1 {
+    padding-top: calc(0.75em + .5vh);
+    color: black;
+}
+
+header {
+    height: 7em;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background: transparent;
+}
+
+/* Style the header links */
+header a {
+    float: left;
+    text-align: center;
+    padding-left: 0.5em;
+    text-decoration: none;
+    font-size: calc(0.75em + .5vw);
+    line-height: 25px;
+    border-radius: 4px;
+    color: var(--main-txt-color);
+  }
+
+.header-logo {
+    position: relative;
+    width: 10%;
+}
+
+header a:hover {
+    text-decoration: underline;
+}
+
+/* Style the active/current link*/
+header a:active {
+    text-decoration: underline;
+}
+
+header .header-right {
+    display: flex;
+    float: right;
+    align-items: center;
+}
+
+header .header-left {
+    display: flex;
+    align-items: center;
+    float: left;
+}
+
+/* Float the link section to the right */
+
+header .slogan {
+    position: relative;
+    padding: 0.5em;
+    color: var(--main-txt-color);
+    font-size: calc(0.8em + .5vw);
+}
+
+.main-title {
+    text-transform: uppercase;
+    font-size: calc(1.337em + .5vw);
+    letter-spacing: 0.01337em;
+    text-align: center;
+    text-decoration: underline;
+    color: var(--main-txt-color);
+ }
+ 
+.box {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+
+}
+fd.box>* {
+    flex: 0 0 0;
+}
+
+.youtubevid {
+    display: flex;
+    align-items: center;
+    flex-flow: column;
+
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    align-self:stretch;
+}
+
+.youtubevid a {
+    color: var(--main-txt-color)
+}
+
+.dropdownParagraph {
+    text-transform: uppercase;
+    font-size: calc(1.337em + .5vw);
+    letter-spacing: 0.01337em;
+    text-align: center;
+    color: var(--main-txt-color);
+}
+
+select {
+    width: 40%;
+    height: 2em;
+    -moz-padding-start: calc(10px - 3px);
+    padding-left: 10px;
+    background: black;
+    color: var(--main-txt-color);
+    text-transform: uppercase;
+    font-family: monospace;
+    font-size: 1.337em;
+    
+  }
+
+.youtubevid h1{
+    position: relative;
+    font-size: calc(1.337em + .5vw);
+    color: var(--main-txt-color);
+}
+
+h2 {
+    position: relative;
+    font-size: calc(12px + .5vw);
+    text-align: center;
+    color: var(--main-txt-color);
+}
+
+.shoecarousel{
+    align-items: center;
+    padding-top: 2.5vw;
+    width: 448px;
+}
+
+.shadow{
+    border-radius: 5px 5px 0 0;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+
+.description{
+    text-align: center;
+    width: 40%;
+}
+
+button {
+    display: flex;
+    border: none;
+    font-size: 1.5em;
+    letter-spacing: 1.75px;
+    color: white;
+    background: darkmagenta;
+}
+
+.goggleImg{
+    border-radius: 4%;
+}
+  
+footer {
+    bottom: 0;
+    position: fixed;
+    width: 100%;
+  }
+
+@keyframes move_wave {
+    0% {
+        transform: translateX(0) translateZ(0) scaleY(1)
+    }
+    50% {
+        transform: translateX(-25%) translateZ(0) scaleY(0.4)
+    }
+    100% {
+        transform: translateX(-50%) translateZ(0) scaleY(1)
+    }
+}
+.waveWrapper {
+    overflow: hidden;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+
+
+}
+.waveWrapperInner {
+    position: absolute;
+    width: 100%;
+    overflow: hidden;
+    height: 100%;
+    bottom: -1px;
+    background-image: linear-gradient(to bottom,  #141e30, #243b55);
+}
+.bgTop {
+    z-index: 15;
+    opacity: 0.5;
+}
+.bgMiddle {
+    z-index: 10;
+    opacity: 0.75;
+}
+.bgBottom {
+    z-index: 5;
+}
+.wave {
+    position: absolute;
+    left: 0;
+    width: 200%;
+    height: 100%;
+    background-repeat: repeat no-repeat;
+    background-position: 0 bottom;
+    transform-origin: center bottom;
+}
+.waveTop {
+    background-size: 50% 100px;
+}
+.waveAnimation .waveTop {
+    animation: move-wave 3s;
+    -webkit-animation: move-wave 3s;
+    -webkit-animation-delay: 1s;
+    animation-delay: 1s;
+}
+.waveMiddle {
+    background-size: 50% 120px;
+}
+.waveAnimation .waveMiddle {
+    animation: move_wave 10s linear infinite;
+}
+.waveBottom {
+    background-size: 50% 100px;
+}
+.waveAnimation .waveBottom {
+    animation: move_wave 15s linear infinite;
+}
