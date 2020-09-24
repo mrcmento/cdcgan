@@ -22,8 +22,8 @@ class Home extends React.Component {
 
     render() {
         return(
-            <div className="box">
-                <h1 className="main-title">Footwear designed by artificial intelligence</h1>
+            <div>
+                <h1 style={{textDecoration: "underline"}}>Footwear designed by<br/>artificial intelligence</h1>
                 <DropDown currentClass ={this.state.imageClass} handleChange={(imageClass) => this.updateClass(imageClass)}></DropDown>
                 <CarouselComponent loading = {this.state.loading} content={this.state.images} handleClick={this.handleClick}></CarouselComponent>
             </div>

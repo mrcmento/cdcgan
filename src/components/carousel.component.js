@@ -6,21 +6,21 @@ import Loader from 'react-loader-spinner';
 function CarouselComponent(props){
     const style = { position: "fixed", top: "50%", left: "50%", transform: "translate(-50%, -50%)" };
     return ( 
-        <div className="shoecarousel">
+        <div>
             {props.loading ?  <Loader style = {style} type="Grid" color="#2BAD60" height="100" width="100" /> : 
-                <div>
+                <div className="shoecarousel">
                     <Carousel onChange={(selectedItem) => {props.handleClick(selectedItem); }}
                             showArrows={true} showStatus={false}
                             showThumbs={true}
                             showIndicators={false}
-                            selectedItem={0}
+                            selectedItem={2}
                             swipeable={true}>
-                        {props.content.map((d) => <div key={d}> <img className='goggleImg' src={d} /></div>)}    
+                        {props.content.map((d) => <div key={d}> <img src={d} /></div>)}    
                     </Carousel>
-                    <h2 style={{lineHeight: 1.4}}>Generate brand new shoes<br></br>Every shoe is unique<br></br>Guaranteed!</h2>
-                </div>
-            }
-    </div>);
+                    <h2>Swipe through the endless gallery<br/>Every shoe is unique<br/>Guaranteed!</h2>
+                </div>}
+        </div>
+    );
 }
 
 export default CarouselComponent

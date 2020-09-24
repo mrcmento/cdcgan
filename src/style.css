@@ -1,51 +1,62 @@
 * {
     box-sizing: border-box;
+    align-items: center;
 }
 
 :root {
     --main-txt-color: gray;
-  }
+}
 
-.front {
-    position: relative;;
-    z-index:15;
+.box *{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+html { 
+    background: linear-gradient(to bottom,  #141e30, #243b55) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }
 
 body {
     margin: 0;
-    background-color: #4c4c4b;
     font-family: monospace;
 }
 
 h1 {
+    font-size: calc(1em + .5vh);
     padding-top: calc(0.75em + .5vh);
-    color: black;
+    color: var(--main-txt-color);
+    text-align: center;
 }
 
 header {
-    height: 7em;
     display: flex;
-    align-items: center;
     justify-content: space-around;
-    background: transparent;
+    background: rgba(0,0,0,0.2);
 }
+
+.header-logo {
+    width: 12%;
+}
+
+.slogan {
+    padding-left: 0.5em;
+    color: var(--main-txt-color);
+    font-size: 1.75em;
+}
+
 
 /* Style the header links */
 header a {
-    float: left;
     text-align: center;
-    padding-left: 0.5em;
+    padding-left: 0.8em;
     text-decoration: none;
-    font-size: calc(0.75em + .5vw);
-    line-height: 25px;
-    border-radius: 4px;
-    color: var(--main-txt-color);
+    font-size: calc(0.75em + 0.4vw);
   }
-
-.header-logo {
-    position: relative;
-    width: 10%;
-}
 
 header a:hover {
     text-decoration: underline;
@@ -57,81 +68,58 @@ header a:active {
 }
 
 header .header-right {
-    display: flex;
     float: right;
     align-items: center;
+    padding-right: 2%;
 }
 
 header .header-left {
     display: flex;
     align-items: center;
     float: left;
-}
-
-/* Float the link section to the right */
-
-header .slogan {
-    position: relative;
-    padding: 0.5em;
-    color: var(--main-txt-color);
-    font-size: calc(0.8em + .5vw);
+    padding-left: 2%;
 }
 
 .main-title {
     text-transform: uppercase;
-    font-size: calc(1.337em + .5vw);
+    font-size: 1em;
     letter-spacing: 0.01337em;
     text-align: center;
     text-decoration: underline;
     color: var(--main-txt-color);
  }
  
-.box {
-    display: flex;
-    flex-flow: column;
-    align-items: center;
-
-}
-fd.box>* {
-    flex: 0 0 0;
+.player-wrapper {
+    position: relative;
+    padding-top: 40%;
+    width: 40%
 }
 
-.youtubevid {
-    display: flex;
-    align-items: center;
-    flex-flow: column;
-
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    align-self:stretch;
+.react-player {
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
-.youtubevid a {
+a {
+    text-align: center;
     color: var(--main-txt-color)
 }
 
 .dropdownParagraph {
     text-transform: uppercase;
-    font-size: calc(1.337em + .5vw);
-    letter-spacing: 0.01337em;
+    font-size: 1em;
     text-align: center;
     color: var(--main-txt-color);
 }
 
 select {
-    width: 40%;
-    height: 2em;
-    -moz-padding-start: calc(10px - 3px);
-    padding-left: 10px;
+    width: auto;
     background: black;
     color: var(--main-txt-color);
     text-transform: uppercase;
     font-family: monospace;
-    font-size: 1.337em;
-    
+    font-size: 1.2em;
   }
 
 .youtubevid h1{
@@ -142,29 +130,54 @@ select {
 
 h2 {
     position: relative;
-    font-size: calc(12px + .5vw);
+    font-size: 1em;
     text-align: center;
     color: var(--main-txt-color);
 }
 
 .shoecarousel{
-    align-items: center;
-    padding-top: 2.5vw;
-    width: 448px;
+    padding-top: 2%;
+    width: 448px
 }
+
+.description{
+    width: 40vw;
+    color: var(--main-txt-color);
+}
+
+@media only screen and (max-width: 768px) {
+    /* For mobile phones: */
+    [class*="shoecarousel"] {
+      width: 67vw;
+    }
+    [class*="player-wrapper"] {
+        padding-top: 80%;
+        width: 80%;
+    }
+    [class*="description"] {
+        width: 90vw;
+    }
+    [class*="header-logo"] {
+        width: 10%;
+    }
+    [class*="slogan"] {
+        font-size: 0.8em;
+    }
+}
+
+
+.header-logo {
+    width: 12%;
+}
+
 
 .shadow{
     border-radius: 5px 5px 0 0;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 }
 
-.description{
-    text-align: center;
-    width: 40%;
-}
 
 button {
-    display: flex;
     border: none;
     font-size: 1.5em;
     letter-spacing: 1.75px;
@@ -177,9 +190,11 @@ button {
 }
   
 footer {
+    position: absolute;
     bottom: 0;
-    position: fixed;
-    width: 100%;
+    width: 644px;
+    height: 20px;
+    margin: 0 auto;
   }
 
 @keyframes move_wave {
@@ -194,14 +209,13 @@ footer {
     }
 }
 .waveWrapper {
+    z-index: -1;
     overflow: hidden;
     position: absolute;
     left: 0;
     right: 0;
     bottom: 0;
     top: 0;
-
-
 }
 .waveWrapperInner {
     position: absolute;
@@ -209,18 +223,15 @@ footer {
     overflow: hidden;
     height: 100%;
     bottom: -1px;
-    background-image: linear-gradient(to bottom,  #141e30, #243b55);
 }
 .bgTop {
-    z-index: 15;
     opacity: 0.5;
 }
 .bgMiddle {
-    z-index: 10;
     opacity: 0.75;
 }
 .bgBottom {
-    z-index: 5;
+    opacity: 0.1;
 }
 .wave {
     position: absolute;
@@ -231,14 +242,15 @@ footer {
     background-position: 0 bottom;
     transform-origin: center bottom;
 }
+
 .waveTop {
     background-size: 50% 100px;
 }
 .waveAnimation .waveTop {
-    animation: move-wave 3s;
-    -webkit-animation: move-wave 3s;
-    -webkit-animation-delay: 1s;
-    animation-delay: 1s;
+  animation: move-wave 3s;
+   -webkit-animation: move-wave 3s;
+   -webkit-animation-delay: 1s;
+   animation-delay: 1s;
 }
 .waveMiddle {
     background-size: 50% 120px;
