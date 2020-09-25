@@ -2,7 +2,7 @@
   "name": "tes",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://shoegan.azurewebsites.net",
+  "proxy": "http://localhost:9000",
   "dependencies": {
     "@tensorflow/tfjs": "^2.4.0",
     "@testing-library/jest-dom": "^4.2.4",
@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^7.2.1",
     "file-loader": "^6.1.0",
     "netlify-cli": "^2.64.0",
+    "netlify-lambda": "^2.0.1",
     "node-sass": "^4.14.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -26,7 +27,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lambda": "netlify-lambda serve src/azure-netlify-proxy",
+    "serve": "npm run lambda & npm run start"
   },
   "eslintConfig": {
     "extends": "react-app"

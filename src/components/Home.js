@@ -17,7 +17,7 @@ class Home extends React.Component {
             images: [],
             imageClass: 11,
             loading: true,
-            isLocalAI: true
+            isLocalAI: false
         }
     }
 
@@ -61,7 +61,7 @@ class Home extends React.Component {
     }
 
     updateClass(imageClass) {
-        if(imageClass != this.state.imageClass) {
+        if(imageClass !== this.state.imageClass) {
             this.setState({imageClass: imageClass}, () => this.genInitialPics())
         }
     }

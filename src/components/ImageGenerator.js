@@ -3,8 +3,10 @@ import * as tf from '@tensorflow/tfjs';
 class ImageGenerator {
 
     constructor(onModelLoaded, onAITypeChanged) {
-        this.isLocalAI = true
-        this.url = '/api/shoegan?imageclass='
+        this.isLocalAI = false
+        
+        this.url = '/.netlify/functions/shoegan?imageclass='
+
         this.onAITypeChanged = onAITypeChanged
 
         new Promise( async () => {
@@ -67,16 +69,14 @@ class ImageGenerator {
         } else {
             try{
                 var response = await fetch(this.url + imageClass, {mdethod: 'GET', mode: 'cors'})
-                console.log(response)
                 var imageContent = await response.json()
             } catch (ex){
-                console.log(ex)
                 return []
             }
 
             for(let i = 0; i<112; i++) {
                 for(let j = 0; j<112; j++) {
-                    const pixel = imageContent[i][j] * 255
+                    const pixel = imageContent[i][j]
                     data.push(pixel) // red
                     data.push(pixel) // green
                     data.push(pixel) // blue
