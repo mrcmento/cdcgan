@@ -25,7 +25,6 @@ class Home extends React.Component {
         return(
             <div>
                 <h1 style={{textDecoration: "underline"}}>Footwear designed by<br/>artificial intelligence</h1>
-
                 <DropDown currentClass ={this.state.imageClass} handleChange={(imageClass) => this.updateClass(imageClass)}></DropDown>
                 <CarouselComponent loading = {this.state.loading} content={this.state.images} handleClick={this.handleClick}></CarouselComponent>
             </div>

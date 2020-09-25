@@ -17,7 +17,7 @@ function CarouselComponent(props){
                             swipeable={true}>
                         {props.content.map((d) => <div key={d}> <img src={d} /></div>)}    
                     </Carousel>
-                    <h2>Swipe through the endless gallery<br/>Every shoe is unique<br/>Guaranteed!</h2>
+                    <h2 style={{paddingBottom: "10%"}}>Swipe through the endless gallery<br/>Every shoe is unique<br/>Guaranteed!</h2>
                 </div>}
         </div>
     );
