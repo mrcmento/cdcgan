@@ -3,7 +3,7 @@ import * as tf from '@tensorflow/tfjs';
 class ImageGenerator {
 
     constructor(onModelLoaded, onAITypeChanged) {
-        this.isLocalAI = false
+        this.isLocalAI = true
         this.url = '/api/shoegan?imageclass='
         this.onAITypeChanged = onAITypeChanged
 
@@ -12,6 +12,11 @@ class ImageGenerator {
             onModelLoaded()
             }
         )
+    }
+
+    setLocalAI(isLocalAI) {
+        this.isLocalAI = isLocalAI
+        this.onAITypeChanged(this.isLocalAI)
     }
 
     randn_bm(samples) {
@@ -60,7 +65,15 @@ class ImageGenerator {
                 this.setLocalAI(false)
             }
         } else {
-            const imageContent = await (await fetch(this.url + imageClass, {mdethod: 'GET', mode: 'cors'})).json()
+            try{
+                var response = await fetch(this.url + imageClass, {mdethod: 'GET', mode: 'cors'})
+                console.log(response)
+                var imageContent = await response.json()
+            } catch (ex){
+                console.log(ex)
+                return []
+            }
+
             for(let i = 0; i<112; i++) {
                 for(let j = 0; j<112; j++) {
                     const pixel = imageContent[i][j] * 255
@@ -81,11 +94,6 @@ class ImageGenerator {
     
         context.putImageData(imageData,0,0);
         return canvas.toDataURL()
-    }
-
-    setLocalAI(isLocalAI) {
-        this.isLocalAI = isLocalAI
-        this.onAITypeChanged(this.isLocalAI)
     }
 }
 

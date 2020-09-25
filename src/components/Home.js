@@ -39,7 +39,7 @@ class Home extends React.Component {
                     () => this.genInitialPics(this.state.imageClass))
             )
         }
-        this.imageGenerator = new ImageGenerator(onReady, (isLocalAI) => this.setState({isLocalAI: isLocalAI}))
+        this.imageGenerator = new ImageGenerator(onReady,(isLocalAI) => this.setState({isLocalAI: isLocalAI}))
     }
 
     genInitialPics() {
