@@ -3,7 +3,7 @@ import * as tf from '@tensorflow/tfjs';
 class ImageGenerator {
 
     constructor(onModelLoaded, onAITypeChanged) {
-        this.isLocalAI = false
+        this.isLocalAI = true
         
         this.url = '/.netlify/functions/shoegan?imageclass='
 
