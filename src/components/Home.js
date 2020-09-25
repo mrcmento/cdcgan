@@ -16,7 +16,8 @@ class Home extends React.Component {
         this.state = {
             images: [],
             imageClass: 11,
-            loading: true
+            loading: true,
+            isLocalAI: true
         }
     }
 
@@ -24,6 +25,7 @@ class Home extends React.Component {
         return(
             <div>
                 <h1 style={{textDecoration: "underline"}}>Footwear designed by<br/>artificial intelligence</h1>
+
                 <DropDown currentClass ={this.state.imageClass} handleChange={(imageClass) => this.updateClass(imageClass)}></DropDown>
                 <CarouselComponent loading = {this.state.loading} content={this.state.images} handleClick={this.handleClick}></CarouselComponent>
             </div>
@@ -31,30 +33,30 @@ class Home extends React.Component {
         }
 
     componentDidMount() {
-        this.imageGenerator = new ImageGenerator(() => {
-                this.setState({images: []}, 
-                    () => this.setState({imageClass: 11}, 
-                        () => this.genInitialPics(this.state.imageClass))
-                )
-            }
-        )
+        const onReady = () => {
+            this.setState({images: []}, 
+                () => this.setState({imageClass: 11}, 
+                    () => this.genInitialPics(this.state.imageClass))
+            )
+        }
+        this.imageGenerator = new ImageGenerator(onReady, (isLocalAI) => this.setState({isLocalAI: isLocalAI}))
     }
 
     genInitialPics() {
-        this.setState({loading: true}, () => {
+        this.setState({loading: true}, async () => {
             let images = []
             for(let i = 0; i<this.nInitialPics; i++){
-                images.push(this.imageGenerator.generateImage(this.state.imageClass))
+                images.push(await this.imageGenerator.generateImage(this.state.imageClass))
             }
-            this.setState({images}, () => { setTimeout( () => this.setState({loading: false}), 750)})
+            this.setState({images}, () => { this.setState({loading: false})})
         })
     }
 
 
-    genIfNeeded(pos){
+    async genIfNeeded(pos){
         if(pos+1 === this.state.images.length){
-            this.setState({images: [...this.state.images, this.imageGenerator.generateImage(this.state.imageClass)]})
-            
+            const nextImage = await this.imageGenerator.generateImage(this.state.imageClass)
+            this.setState({images: [...this.state.images, nextImage]})
         }
     }
 
