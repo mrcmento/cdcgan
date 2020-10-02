@@ -15,7 +15,6 @@ function DropDown(props) {
                      { name: 'Sneaker', id: 11 }]
     return (
         <div>
-            <p className="dropdownParagraph">Tell the AI what style you want to create</p>
             <select defaultValue={props.currentClass} onChange={(event) => props.handleChange(parseInt(event.target.value))}>
                 {classes.map((d) => <option key={d.id} value={d.id} >{d.name}</option>)}
             </select>

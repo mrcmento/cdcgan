@@ -1,8 +1,8 @@
 import React from 'react'
-
-import CarouselComponent from "./carousel.component";
 import DropDown from './dropdown';
+import Loader from 'react-loader-spinner';
 import ImageGenerator from './ImageGenerator'
+import CarouselComponent from "./carousel.component";
 
 class Home extends React.Component {
 
@@ -17,16 +17,28 @@ class Home extends React.Component {
             images: [],
             imageClass: 11,
             loading: true,
-            isLocalAI: false
+            isLocalAI: true
         }
     }
 
     render() {
+        
         return(
             <div>
-                <h1 style={{textDecoration: "underline"}}>Footwear designed by<br/>artificial intelligence</h1>
+                <h1>AI generated Footwear</h1>
                 <DropDown currentClass ={this.state.imageClass} handleChange={(imageClass) => this.updateClass(imageClass)}></DropDown>
-                <CarouselComponent loading = {this.state.loading} content={this.state.images} handleClick={this.handleClick}></CarouselComponent>
+                {this.state.loading ?
+                    <div style={{paddingTop: "3rem"}}>
+                        <Loader type="Rings" color="#2BAD60" /> 
+                        <p style={{textAlign: "center", color: "#2BAD60", paddingTop: "1rem"}}>
+                            {!this.state.isLocalAI ? 'Waiting for serverless cloud AI' : 'Trying to use local image generator'}
+                        </p>
+                    </div>
+                :<div>
+                    <CarouselComponent content={this.state.images} handleClick={this.handleClick}></CarouselComponent>
+                    <h2>unique shoes only</h2>
+                </div> }
+  
             </div>
             )
         }
@@ -38,30 +50,30 @@ class Home extends React.Component {
                     () => this.genInitialPics(this.state.imageClass))
             )
         }
-        this.imageGenerator = new ImageGenerator(onReady,(isLocalAI) => this.setState({isLocalAI: isLocalAI}))
+        this.imageGenerator = new ImageGenerator(onReady, (isLocalAI) => this.setState({isLocalAI: isLocalAI}))
     }
 
     genInitialPics() {
         this.setState({loading: true}, async () => {
-            let images = []
+            let parallelCalls = []
             for(let i = 0; i<this.nInitialPics; i++){
-                images.push(await this.imageGenerator.generateImage(this.state.imageClass))
+                parallelCalls.push(this.imageGenerator.getNext(this.state.imageClass))
             }
+            const images = await Promise.all(parallelCalls)
             this.setState({images}, () => { this.setState({loading: false})})
         })
     }
 
-
     async genIfNeeded(pos){
         if(pos+1 === this.state.images.length){
-            const nextImage = await this.imageGenerator.generateImage(this.state.imageClass)
+            const nextImage = await this.imageGenerator.getNext(this.state.imageClass)
             this.setState({images: [...this.state.images, nextImage]})
         }
     }
 
     updateClass(imageClass) {
         if(imageClass !== this.state.imageClass) {
-            this.setState({imageClass: imageClass}, () => this.genInitialPics())
+            this.setState({imageClass}, () => this.genInitialPics())
         }
     }
 }

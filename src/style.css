@@ -7,6 +7,14 @@
     --main-txt-color: gray;
 }
 
+#page-container {
+    position: relative;
+    min-height: 100vh;
+    font-family: monospace;
+    position: relative;
+    margin: 0;
+}
+
 .box *{
     display: block;
     margin-left: auto;
@@ -14,22 +22,20 @@
 }
 
 html { 
-    background: linear-gradient(to bottom,  #141e30, #243b55) no-repeat center center fixed; 
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
+    background: linear-gradient(to bottom,  #141e40, #243b55) no-repeat center center fixed;
 }
 
 body {
     margin: 0;
-    font-family: monospace;
-    height: 100%;
 }
-
+  
+#content-wrap {
+    padding-bottom: 2.5rem;    /* Footer height */
+}
+  
 h1 {
-    font-size: calc(1em + .5vh);
-    padding-top: .5vh;
+    font-size: calc(1.5em);
+    margin-top: 1.25rem;
     color: var(--main-txt-color);
     text-align: center;
 }
@@ -41,7 +47,7 @@ header {
 }
 
 .header-logo {
-    width: 12%;
+    width: 20%;
 }
 
 .slogan {
@@ -85,64 +91,48 @@ header .header-left {
     padding-left: 2%;
 }
 
-.main-title {
-    text-transform: uppercase;
-    font-size: 1em;
-    letter-spacing: 0.01337em;
-    text-align: center;
-    text-decoration: underline;
-    color: var(--main-txt-color);
- }
- 
 .player-wrapper {
+    margin-top: 0.5rem;
     position: relative;
     padding-top: 40%;
     width: 40%
 }
 
 .react-player {
+    margin-top: 0.5rem;
     position: absolute;
     top: 0;
     left: 0;
 }
 
-.dropdownParagraph {
-    text-transform: uppercase;
-    font-size: 1em;
-    text-align: center;
-    color: var(--main-txt-color);
-}
-
 select {
+    margin-top: 0.5rem;
     width: auto;
-    background: rgba(0,0,0,0.9);
+    background: transparent;
     color: var(--main-txt-color);
     font-family: monospace;
-    font-size: 1.2em;
+    font-size: 1.25em;
+    border: 1px solid var(--main-txt-color);;
+    padding: 2px;
+    outline:none;
   }
 
-.youtubevid h1{
-    position: relative;
-    font-size: calc(1.337em + .5vw);
-    color: var(--main-txt-color);
-}
-
 h2 {
-    position: relative;
-    font-size: 1em;
+    margin-top: 0.5rem;
+    font-size: 1.2em;
     text-align: center;
     color: var(--main-txt-color);
 }
 
 .shoecarousel{
-    padding-top: 1%;
-    width: 448px
+    padding-top: 1em;
+    width: 332px
 }
 
 .description{
     width: 40vw;
     color: var(--main-txt-color);
-    padding-bottom: 10%;
+    
 }
 
 @media only screen and (max-width: 768px) {
@@ -157,33 +147,29 @@ h2 {
     [class*="description"] {
         width: 90vw;
     }
-    [class*="header-logo"] {
-        width: 10%;
-    }
     [class*="slogan"] {
-        font-size: 0.8em;
+        font-size: 1.2em;
+    }
+    [class*="header-logo"] {
+        width: 20%;
     }
 }
 
 .impressum {
     display: flex;
-    flex: 1;
-    flex-direction: column;
-    align-items: flex-end;
-    justify-content: flex-end;
-    padding-top: 4%;
+    align-items: center;
+    color: var(--main-txt-color);
+    justify-content: space-around;
 }
 
 footer {
-    margin-left: 0;
-    margin-right: 0;
-    position: fixed;
-    left: 0;
-    flex-direction: row;
+    position: absolute;
     bottom: 0;
     width: 100%;
-    background-color: rgba(0,0,0,0.2);;
-}
+    height: 2.5rem;            /* Footer height */
+    background-color: rgba(0,0,0,0.2);
+  }
+
 
 footer p{
     font-size: 1em;

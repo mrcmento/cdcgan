@@ -3,13 +3,23 @@ import React from 'react'
 function Impressum() {
     return(
         <div className="impressum">
-            <p>Clemens Drauschke</p>
-            <p>Beltgens Garten 14</p>
-            <p>D-20537 Hamburg</p>
-            <p>Inhaltlich Verantwortlicher gem. § 55 Absatz 2 RStV:</p>
-            <p>Clemens Drauschke</p>
-            <p>Beltgens Garten 14</p>
-            <p>D-20537 Hamburg</p>
+            <div className="box">
+            <h3>Impressum</h3>
+                <p>Clemens Drauschke<br />
+                Beltgens Garten 14<br />
+                20537 Hamburg
+                </p>
+
+                <p>
+                Telefon: 015773422355<br />
+                E-Mail: <a href="mailto:clemens.drauschke@gmx.de">clemens.drauschke@gmx.de</a>
+                </p>
+
+                <p>
+                Vertreten durch:<br />
+                Clemens Drauschke<br />
+                </p>
+            </div>
         </div>
     )
 }

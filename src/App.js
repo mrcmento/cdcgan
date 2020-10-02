@@ -12,12 +12,14 @@ function App() {
       <Router>
           <Header/>
           <div className="box">
-            <Switch>
-                <Route exact path="/"><Redirect to="/home" /></Route>
-                <Route path='/home' exact component={Home}/>
-                <Route path='/about' component={About}/>
-                <Route path='/impressum' component={Impressum}/>
-            </Switch> 
+            <div id="content-wrap">
+              <Switch>
+                  <Route exact path="/"><Redirect to="/home" /></Route>
+                  <Route path='/home' exact component={Home}/>
+                  <Route path='/about' component={About}/>
+                  <Route path='/impressum' component={Impressum}/>
+              </Switch> 
+            </div>
             <Footer></Footer>
           </div>
       </Router>

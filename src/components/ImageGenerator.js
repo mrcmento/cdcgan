@@ -1,19 +1,37 @@
+import randn_bm from './randn_bm'
 import * as tf from '@tensorflow/tfjs';
+import fetchWithTimeout from './fetchWithTimeout'
 
 class ImageGenerator {
 
-    constructor(onModelLoaded, onAITypeChanged) {
+    constructor(onGeneratorReady, onAITypeChanged) {
         this.isLocalAI = true
-        
-        this.url = '/.netlify/functions/shoegan?imageclass='
-
         this.onAITypeChanged = onAITypeChanged
+        this.url = '/.netlify/functions/shoegan?imageclass='
+        this.init(onGeneratorReady)
+    }
 
-        new Promise( async () => {
+    init(onGeneratorReady) {
+        new Promise(async () => {
             this.model = await tf.loadLayersModel('jsmodel/model.json');
-            onModelLoaded()
+
+            this.setLocalAI(await this.checkLocalAIWorksOnDevice())
+
+            if(!this.isLocalAI){
+                await this.waitForFunctionHostColdStart()
             }
-        )
+            onGeneratorReady()
+        })
+    }
+
+    async waitForFunctionHostColdStart() {
+        while(true) {
+            try {
+                await fetchWithTimeout(this.url + '0', {mdethod: 'GET'}) // later ping
+                break //got any response. Function Host booted
+            }
+            catch{}
+        }
     }
 
     setLocalAI(isLocalAI) {
@@ -21,76 +39,82 @@ class ImageGenerator {
         this.onAITypeChanged(this.isLocalAI)
     }
 
-    randn_bm(samples) {
-        let nums = []
-        for(let i = 0; i<samples; i++) {
-            var u = 0, v = 0;
-            while(u === 0) u = Math.random();
-            while(v === 0) v = Math.random();
-            nums.push(Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v ))
-        }
-        return nums
+    async checkLocalAIWorksOnDevice() {
+        const tryGenerator = new Promise(async (resolve, reject) => {
+            const testImage = await this.generateImageInBrowser(0) //try to generate image locally...
+            resolve(testImage.length !== 0)
+        });
+          
+        const generationTimeout = new Promise((resolve, reject) => {
+            setTimeout(() => resolve(false), 1500);
+        });
+
+        return await Promise.race([tryGenerator, generationTimeout])
     }
 
-    async generateImage(imageClass) {
-        let data = []
-        
-        if(this.isLocalAI) {
-            try {
-                const latent_dim = 100
-                const n_samples = 1
-                const x_input = tf.tensor2d([this.randn_bm(latent_dim * n_samples)])
-                const z_input = x_input//x_input.reshape(n_samples, latent_dim)
-                const labels = tf.tensor1d([imageClass]) //tf.randint(0, n_classes, n_samples)
+    async generateImageInBrowser(imageClass) {
+        let buffer = []
+        try {
+            const latent_dim = 100
+            const n_samples = 1
+            const x_input = tf.tensor2d([randn_bm(latent_dim * n_samples)])
+            const z_input = x_input//x_input.reshape(n_samples, latent_dim)
+            const labels = tf.tensor1d([imageClass]) //tf.randint(0, n_classes, n_samples)
 
-                //if gen takes too long like on old pcs...
-                let didThisInTime = false
-                setTimeout(() => { 
-                        if(!didThisInTime) {
-                            this.setLocalAI(false)
-                            throw 'timeout'
-                        }
-                    } ,500)
-                const raw = this.model.predict([z_input, labels])
-                didThisInTime = true
+            const raw = this.model.predict([z_input, labels])
+            const dataSync = Array.from(raw.dataSync())
 
-                const dataSync = Array.from(raw.dataSync())
-
-                for (var i = 0; i < dataSync.length; i++) {
-                    const pixel = ((dataSync[i] + 1) / 2.0) * 255.0
-                    data.push(pixel) // red
-                    data.push(pixel) // green
-                    data.push(pixel) // blue
-                    data.push(255) // alpha
-                }
-            } catch {
-                this.setLocalAI(false)
+            for (var i = 0; i < dataSync.length; i++) {
+                const pixel = ((dataSync[i] + 1) / 2.0) * 255.0
+                buffer.push(pixel) // red
+                buffer.push(pixel) // green
+                buffer.push(pixel) // blue
+                buffer.push(255) // alpha
             }
-        } else {
-            try{
-                var response = await fetch(this.url + imageClass, {mdethod: 'GET', mode: 'cors'})
-                var imageContent = await response.json()
-            } catch (ex){
-                return []
-            }
+        } catch {
+            this.setLocalAI(false)
+        }
+        return buffer
+    }
 
-            for(let i = 0; i<112; i++) {
-                for(let j = 0; j<112; j++) {
-                    const pixel = imageContent[i][j]
-                    data.push(pixel) // red
-                    data.push(pixel) // green
-                    data.push(pixel) // blue
-                    data.push(255)   // alpha
-                }
+    async generateImageInCloud(imageClass) {
+        let buffer = []
+        try{
+            var response = await fetch(this.url + imageClass, {mdethod: 'GET'})
+            var imageContent = await response.json()
+        } catch (ex){
+            console.log(ex)
+            return []
+        }
+
+        for(let i = 0; i<112; i++) {
+            for(let j = 0; j<112; j++) {
+                const pixel = imageContent[i][j]
+                buffer.push(pixel) // red
+                buffer.push(pixel) // green
+                buffer.push(pixel) // blue
+                buffer.push(255)   // alpha
             }
         }
+        return buffer
+    }
+
+    //delegation wrapper for generation
+    async delegateImageGeneration(imageClass) {
+        if(this.isLocalAI)
+            return await this.generateImageInBrowser(imageClass)
+
+        return await this.generateImageInCloud(imageClass)
+    }
+
+    async getNext(imageClass) {
         const canvas = document.createElement('canvas')
         const context = canvas.getContext('2d')
         canvas.width = 112
         canvas.height = 112
         
-        let imageData = new ImageData(112, 112)
-        imageData.data.set(data)
+        const imageData = new ImageData(112, 112)
+        imageData.data.set(await this.delegateImageGeneration(imageClass))
     
         context.putImageData(imageData,0,0);
         return canvas.toDataURL()

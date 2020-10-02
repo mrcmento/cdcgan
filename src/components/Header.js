@@ -5,7 +5,7 @@ function Header() {
         <header>
             <div className = "header-left">
                 <img src='tes.png' className="header-logo"/>
-                <p><font className='slogan'>Turning ideas into insights</font></p>
+                <p className='slogan'>28-square</p>
             </div>
             <nav className="header-right">
                 <a className="active" href="home">Home</a>
