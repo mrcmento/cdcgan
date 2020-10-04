@@ -15,12 +15,12 @@ class Home extends React.Component {
         this.nInitialPics = 4
         this.state = {
             images: [],
-            imageClass: 11,
+            imageClass: 0,
             loading: true,
             isLocalAI: true
         }
     }
-
+ 
     render() {
         
         return(
@@ -46,8 +46,7 @@ class Home extends React.Component {
     componentDidMount() {
         const onReady = () => {
             this.setState({images: []}, 
-                () => this.setState({imageClass: 11}, 
-                    () => this.genInitialPics(this.state.imageClass))
+                () => this.genInitialPics(this.state.imageClass) 
             )
         }
         this.imageGenerator = new ImageGenerator(onReady, (isLocalAI) => this.setState({isLocalAI: isLocalAI}))

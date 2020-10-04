@@ -1,3 +1,4 @@
+import config from '../config'
 import randn_bm from './randn_bm'
 import * as tf from '@tensorflow/tfjs';
 import fetchWithTimeout from './fetchWithTimeout'
@@ -7,7 +8,7 @@ class ImageGenerator {
     constructor(onGeneratorReady, onAITypeChanged) {
         this.isLocalAI = true
         this.onAITypeChanged = onAITypeChanged
-        this.url = '/.netlify/functions/shoegan?imageclass='
+        this.url = config.shoeGanUrl
         this.init(onGeneratorReady)
     }
 
@@ -27,7 +28,7 @@ class ImageGenerator {
     async waitForFunctionHostColdStart() {
         while(true) {
             try {
-                await fetchWithTimeout(this.url + '0', {mdethod: 'GET'}) // later ping
+                await fetchWithTimeout(config.shoeGanUrl + '0', {mdethod: 'GET'}) // later ping
                 break //got any response. Function Host booted
             }
             catch{}
@@ -80,7 +81,7 @@ class ImageGenerator {
     async generateImageInCloud(imageClass) {
         let buffer = []
         try{
-            var response = await fetch(this.url + imageClass, {mdethod: 'GET'})
+            var response = await fetch(config.shoeGanUrl + imageClass, {mdethod: 'GET'})
             var imageContent = await response.json()
         } catch (ex){
             console.log(ex)
